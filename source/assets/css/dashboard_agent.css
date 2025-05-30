@@ -1,0 +1,70 @@
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f6fa;
+    }
+
+    .sidebarAgent {
+      width: 240px;
+      background-color: orange;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 2rem 1rem;
+      color: white;
+    }
+
+    .sidebarAgent h2 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .sidebarAgent a {
+      display: block;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .sidebarAgent a:hover,
+    .sidebar a.active {
+      background-color: #e67e00;
+    }
+
+    .mainAgent {
+      margin-left: 240px;
+      padding: 2rem;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .card-header {
+      background-color: white;
+      border-bottom: 1px solid #eee;
+    }
+
+    .badge {
+      font-size: 0.9rem;
+    }
+
+    .btn-action {
+      font-size: 0.9rem;
+      padding: 5px 10px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebarAgent {
+        display: none;
+      }
+
+      .mainAgent {
+        margin-left: 0;
+      }
+    }

@@ -1,0 +1,22 @@
+    body {
+      background-color: #f2f2f2;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .faq-header {
+      background-color: orange;
+      color: white;
+      padding: 2rem 0;
+      text-align: center;
+    }
+    .faq-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .accordion-button:not(.collapsed) {
+      background-color: #ff9800;
+      color: white;
+    }
