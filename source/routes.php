@@ -149,7 +149,7 @@ function displayLogin()
   </form>
 
   <p class="lien-inscription" style="text-align: center; margin-top: 20px;">
-    Pas encore de compte ? <a href="register.php" style="color: orange; font-weight: bold; text-decoration: none;">Créer un compte</a>
+    Pas encore de compte ? <a href="register" style="color: orange; font-weight: bold; text-decoration: none;">Créer un compte</a>
   </p>
 </div>
     ';
@@ -546,6 +546,7 @@ $result .= '</section>';
 
 function displaydashboard_agent()
 {
+  if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == "agent") {
   $result = '
   <!-- Menu latéral -->
 <aside class="sidebarAgent">
@@ -554,7 +555,7 @@ function displaydashboard_agent()
   <a href="#demandes"><i class="fas fa-folder-open"></i> Demandes reçues</a>
   <a href="#ajouter"><i class="fas fa-plus-circle"></i> Ajouter un acte</a>
   <a href="#messagerie"><i class="fas fa-envelope"></i> Messagerie</a>
-  <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+  <a href="' . BASE_URL . SP . "actionLogoutUser" . '"></i> 🔐 Déconnexion</a>
 </aside>
 
 <!-- Zone principale -->
@@ -626,5 +627,9 @@ function displaydashboard_agent()
   </section>
 </div>
   ';
+  }else {
+    header("Location: login");
+    exit();
+  }
   return $result;
 }

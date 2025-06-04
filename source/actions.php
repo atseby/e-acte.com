@@ -29,8 +29,12 @@ function displayActionConnexion(){
     if(isset($user)){
         // L'utilisateur existe
         $_SESSION["user"] = $user;
-        if(isset($_SESSION["user"]) && !empty($_SESSION["user"])){
+
+        if(isset($_SESSION["user"]) && !empty($_SESSION["user"]) && $_SESSION['user']['role'] == 'citoyen'){
             header("Location: profil");
+            exit();
+        }else{
+            header("Location: dashboard_agent");
             exit();
         }
 

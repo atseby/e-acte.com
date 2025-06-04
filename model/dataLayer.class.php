@@ -32,22 +32,22 @@ class DataLayer {
         $verif = $this->connexion->prepare("SELECT id FROM utilisateur WHERE email = :email");
         $verif->bindParam(':email', $email);
         $verif->execute();
-
+        
         if ($verif->rowCount() > 0) {
             // L'email existe déjà
-            return false;
+            return false; die('arret');
         }
-
+        
         // Hachage du mot de passe
         $hash = password_hash($motdepasse, PASSWORD_DEFAULT);
-
+        
         // Insertion dans la base de données
         $stmt = $this->connexion->prepare("INSERT INTO utilisateur (nom, email, telephone, mot_de_passe) VALUES (:nom, :email, :telephone, :motdepasse)");
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':telephone', $telephone);
         $stmt->bindParam(':motdepasse', $hash);
-
+        
         $stmt->execute();
         // INSCRIPTION REUSSI
         return true;
