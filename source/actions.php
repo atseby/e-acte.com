@@ -33,7 +33,7 @@ function displayActionConnexion(){
         if(isset($_SESSION["user"]) && !empty($_SESSION["user"]) && $_SESSION['user']['role'] == 'citoyen'){
             header("Location: profil");
             exit();
-        }else{
+        }elseif(isset($_SESSION["user"]) && !empty($_SESSION["user"]) && $_SESSION['user']['role'] == 'agent'){
             header("Location: dashboard_agent");
             exit();
         }
