@@ -200,7 +200,7 @@ function displayBlog()
 {
   $result = '
     <div class="blog-header">
-    <div class="container">
+    <div class="container-bog">
       <h1>Blog - Digitalisation de l\'État Civil</h1>
       <p>Suivez les dernières actualités sur la modernisation des services d\'état civil en Côte d\'Ivoire</p>
     </div>
