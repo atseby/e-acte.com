@@ -22,23 +22,28 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'nouvelle_naissance':
         detailsContainer.innerHTML = `
           <div class="mb-3">
-            <label for="nombre_copies" class="form-label">Nombre de copies</label>
+            <label for="nombre_copies" class="form-label">Nombre de copies <span style="color: red;">(*)</span>
+</label>
             <input type="number" class="form-control" name="nombre_copies" id="nombre_copies" required>
           </div>
           <div class="mb-3">
-            <label for="nom_enfant" class="form-label">Nom et prénoms de l’enfant</label>
+            <label for="nom_enfant" class="form-label">Nom et prénoms de l’enfant <span style="color: red;">(*)</span>
+</label>
             <input type="text" class="form-control" name="nom_enfant" required>
           </div>
           <div class="mb-3">
-            <label for="date_heure_naissance" class="form-label">Date et heure de naissance</label>
+            <label for="date_heure_naissance" class="form-label">Date et heure de naissance <span style="color: red;">(*)</span>
+</label>
             <input type="datetime-local" class="form-control" name="date_heure_naissance" required>
           </div>
           <div class="mb-3">
-            <label for="nomCompletPere" class="form-label">Nom et prénoms du père</label>
+            <label for="nomCompletPere" class="form-label">Nom et prénoms du père <span style="color: red;">(*)</span>
+</label>
             <input type="text" class="form-control" name="nomCompletPere" required>
           </div>
           <div class="mb-3">
-            <label for="nomCompletMere" class="form-label">Nom et Prénoms de la mère</label>
+            <label for="nomCompletMere" class="form-label">Nom et Prénoms de la mère <span style="color: red;">(*)</span>
+</label>
             <input type="text" class="form-control" name="nomCompletMere" required>
           </div>
         `;
@@ -47,12 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'copie_naissance':
         detailsContainer.innerHTML = `
           <div class="mb-3">
-            <label for="nombre_copies" class="form-label">Nombre de copies</label>
+            <label for="nombre_copies" class="form-label">Nombre de copies <span style="color: red;">(*)</span>
+</label>
             <input type="number" class="form-control" name="nombre_copies" id="nombre_copies" required>
           </div>
           <div class="mb-3">
-            <label for="numero_extrait" class="form-label">Numéro de l’extrait</label>
-            <input type="text" class="form-control" name="numero_extrait" required>
+            <label for="numero_extrait" class="form-label">Numéro et registre de l’extrait <span style="color: red;">(*)</span>
+</label>
+            <input type="text" class="form-control" name="numero_extrait" placeholder="789 du 13/11/2002 du registre 16" required>
           </div>
         `;
         break;
@@ -60,16 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'mariage':
         detailsContainer.innerHTML = `
           <div class="mb-3">
-            <label for="nombre_copies" class="form-label">Nombre de copies</label>
+            <label for="nombre_copies" class="form-label">Nombre de copies <span style="color: red;">(*)</span>
+</label>
             <input type="number" class="form-control" name="nombre_copies" id="nombre_copies" required>
           </div>
           <div class="mb-3">
-            <label for="extrait_mariee" class="form-label">Numéro de l’extrait de la mariée</label>
-            <input type="text" class="form-control" name="extrait_mariee" required>
+            <label for="nomComplet_mariee" class="form-label">Nom et prénoms de la mariée <span style="color: red;">(*)</span>
+</label>
+            <input type="text" class="form-control" name="nomComplet_mariee" required>
           </div>
           <div class="mb-3">
-            <label for="extrait_marie" class="form-label">Numéro de l’extrait du marié</label>
-            <input type="text" class="form-control" name="extrait_marie" required>
+            <label for="nomComplet_marie" class="form-label">Nom et prénoms du marié <span style="color: red;">(*)</span>
+</label>
+            <input type="text" class="form-control" name="nomComplet_marie" required>
           </div>
         `;
         break;
@@ -77,12 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'deces':
         detailsContainer.innerHTML = `
           <div class="mb-3">
-            <label for="nombre_copies" class="form-label">Nombre de copies</label>
+            <label for="nombre_copies" class="form-label">Nombre de copies <span style="color: red;">(*)</span>
+</label>
             <input type="number" class="form-control" name="nombre_copies" id="nombre_copies" required>
           </div>
           <div class="mb-3">
-            <label for="extrait_defunt" class="form-label">Numéro de l’extrait de naissance du défunt</label>
-            <input type="text" class="form-control" name="extrait_defunt" required>
+            <label for="extrait_defunt" class="form-label">Numéro de l’extrait de naissance du défunt <span style="color: red;">(*)</span>
+</label>
+            <input type="text" class="form-control" name="extrait_defunt" placeholder="789 du 13/11/2002 du registre 16" required>
           </div>
         `;
         break;

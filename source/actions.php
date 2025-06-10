@@ -30,9 +30,14 @@ function displayActionConnexion(){
         // L'utilisateur existe
         $_SESSION["user"] = $user;
         if(isset($_SESSION["user"]) && !empty($_SESSION["user"])){
+            if($_SESSION["user"]["role"] == "agent"){
+                header("Location: dashboard_agent");
+                exit();
+            }
             header("Location: profil");
             exit();
         }
+        
 
     }
     else{
@@ -85,3 +90,4 @@ function displayActionLogoutUser() {
     header("Location: login");
     exit;
 }
+

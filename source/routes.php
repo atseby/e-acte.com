@@ -1,7 +1,8 @@
 <?php
 
-function displayError($message = "La page demandée est introuvable.") {
-    $result = '
+function displayError($message = "La page demandée est introuvable.")
+{
+  $result = '
     <div class="container text-center py-5">
         <h1 class="display-4 text-danger">Erreur 404</h1>
         <p class="lead text-muted">' . htmlspecialchars($message) . '</p>
@@ -9,7 +10,7 @@ function displayError($message = "La page demandée est introuvable.") {
     </div>
     ';
 
-    return $result;
+  return $result;
 }
 
 
@@ -338,7 +339,7 @@ function displayProfil()
       <!-- Section : Profil -->
       <section id="profil">
         <h3 class="section-title">Mes informations</h3>
-        <form action="update_profil.php" method="post">
+        <form action="#" method="post">
           <div class="mb-3">
             <label for="nom" class="form-label">Nom complet</label>
             <input type="text" class="form-control" id="nom" name="nom" value="' . $nom . '">
@@ -363,7 +364,8 @@ function displayProfil()
         <form action="' . BASE_URL . SP . "actionDemandeActe" . '" method="post" id="form-demande">
           <!-- Étape 1 : Choix du type d’acte -->
           <div class="mb-3">
-            <label for="type_acte" class="form-label">Type d’acte</label>
+            <label for="type_acte" class="form-label">Type d’acte <span style="color: red;">(*)</span>
+</label>
             <select class="form-select" name="type_acte" id="type_acte" required>
               <option value="">-- Choisir --</option>
               <option value="nouvelle_naissance">Nouvel acte de naissance</option>
@@ -378,18 +380,20 @@ function displayProfil()
 
           <div class="mb-3">
             <label for="motif" class="form-label">Motif de la demande</label>
-            <textarea class="form-control" name="motif" rows="3" required></textarea>
+            <textarea class="form-control" name="motif" rows="3"></textarea>
           </div>
 
           <!-- Étape 3 : Paiement des frais de timbre -->
           <div id="paiement-section" class="mt-4">
             <h5>Paiement des frais de timbre</h5>
             <div class="mb-3">
-              <label for="frais_timbre" class="form-label">Frais de timbre à payer (500 F par copie)</label>
+              <label for="frais_timbre" class="form-label">Frais de timbre à payer (500 F par copie) <span style="color: red;">(*)</span>
+</label>
               <input type="text" class="form-control" id="frais_timbre" name="frais_timbre" readonly>
             </div>
             <div class="mb-3">
-              <label for="moyen_paiement" class="form-label">Moyen de paiement</label>
+              <label for="moyen_paiement" class="form-label">Moyen de paiement <span style="color: red;">(*)</span>
+</label>
               <select id="moyen_paiement" class="form-select" name="moyen_paiement" required>
                 <option value="">-- Choisir --</option>
                 <option value="orange">Orange Money</option>
@@ -399,7 +403,8 @@ function displayProfil()
               </select>
             </div>
             <div class="mb-3">
-              <label for="numero_depot" class="form-label">Numéro sur lequel effectuer le dépôt</label>
+              <label for="numero_depot" class="form-label">Numéro sur lequel effectuer le dépôt <span style="color: red;">(*)</span>
+</label>
               <div class="input-group">
                <input type="text" class="form-control" id="numero_depot" name="numero_depot" readonly>
                <button type="button" class="btn btn-outline-secondary" id="btn-copier">📋 Copier</button>
@@ -407,7 +412,8 @@ function displayProfil()
             </div>
 
             <div class="mb-3">
-              <label for="reference_paiement" class="form-label">Identifiant du dépôt (après transfert manuel)</label>
+              <label for="reference_paiement" class="form-label">Identifiant du dépôt (après transfert manuel) <span style="color: red;">(*)</span>
+</label>
               <input type="text" class="form-control" name="reference_paiement" required>
             </div>
             <p class="text-muted">Effectuez le dépôt sur le numéro affiché entre les parenthèses, puis renseignez l\'identifiant ici.</p>
@@ -438,20 +444,20 @@ function displayProfil()
       <hr class="my-5">
 
       <!-- Section : Suivi -->';
-$result .= '
+    $result .= '
 <section id="suivi">
   <h3 class="section-title">Mes demandes en cours</h3>
   
 ';
 
-if (empty($user_demandes)) {
-  $result .= '
+    if (empty($user_demandes)) {
+      $result .= '
     <div class="alert alert-info text-center mt-3">
       Aucune demande enregistrée pour le moment.
     </div>
   ';
-} else {
-  $result .= '
+    } else {
+      $result .= '
     <table class="table table-bordered table-striped">
       <thead class="table-light">
         <tr>
@@ -468,23 +474,23 @@ if (empty($user_demandes)) {
       <tbody>
   ';
 
-  foreach ($user_demandes as $demande) {
-    $badgeClass = match ($demande['statut']) {
-      'validée'    => 'bg-success',
-      'refusée'    => 'bg-danger',
-      'en attente' => 'bg-warning',
-      default      => 'bg-secondary',
-    };
+      foreach ($user_demandes as $demande) {
+        $badgeClass = match ($demande['statut']) {
+          'validée'    => 'bg-success',
+          'refusée'    => 'bg-danger',
+          'en attente' => 'bg-warning',
+          default      => 'bg-secondary',
+        };
 
-    $typeLibelles = [
-    'nouvelle_naissance' => 'Nouvel acte de naissance',
-    'copie_naissance'    => 'Copie d\'acte de naissance',
-    'mariage'            => 'Acte de mariage',
-    'deces'              => 'Acte de décès'
-];
+        $typeLibelles = [
+          'nouvelle_naissance' => 'Nouvel acte de naissance',
+          'copie_naissance'    => 'Copie d\'acte de naissance',
+          'mariage'            => 'Acte de mariage',
+          'deces'              => 'Acte de décès'
+        ];
 
 
-    $result .= '
+        $result .= '
       <tr>
         <td>#' . htmlspecialchars($demande['id']) . '</td>
         <td>' . date('d/m/Y', strtotime($demande['date_demande'])) . '</td>
@@ -496,18 +502,18 @@ if (empty($user_demandes)) {
         <td><span class="badge ' . $badgeClass . '">' . ucfirst($demande['statut']) . '</span></td>
       </tr>
     ';
-  }
+      }
 
-  $result .= '
+      $result .= '
       </tbody>
     </table>
   ';
-}
+    }
 
-$result .= '</section>';
+    $result .= '</section>';
 
 
-      $result .= '<hr class="my-5">
+    $result .= '<hr class="my-5">
 
       <!-- Section : Résultats -->
       <section id="resultats">
@@ -546,15 +552,19 @@ $result .= '</section>';
 
 function displaydashboard_agent()
 {
-  $result = '
+  if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == "agent") {
+
+    global $model;
+    $result = '
   <!-- Menu latéral -->
 <aside class="sidebarAgent">
   <h2>e-Actes</h2>
+  <p>AGENT : '.$_SESSION["user"]["email"].'</p>
   <a href="#dashboard" class="active"><i class="fas fa-chart-line"></i> Tableau de bord</a>
   <a href="#demandes"><i class="fas fa-folder-open"></i> Demandes reçues</a>
   <a href="#ajouter"><i class="fas fa-plus-circle"></i> Ajouter un acte</a>
   <a href="#messagerie"><i class="fas fa-envelope"></i> Messagerie</a>
-  <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+  <a href="' . BASE_URL . SP . "actionLogoutUser" . '"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
 </aside>
 
 <!-- Zone principale -->
@@ -565,66 +575,240 @@ function displaydashboard_agent()
     <div class="col-md-4">
       <div class="card p-3 text-white bg-success">
         <h4>Demandes traitées</h4>
-        <p class="display-6">120</p>
+        <p class="display-6">' . $model->countDemandesByStatut('validée') . '</p>
       </div>
     </div>
     <div class="col-md-4">
       <div class="card p-3 text-white bg-warning">
         <h4>En attente</h4>
-        <p class="display-6">35</p>
+        <p class="display-6">' . $model->countDemandesByStatut('en attente') . '</p>
       </div>
     </div>
     <div class="col-md-4">
-      <div class="card p-3 text-white bg-primary">
-        <h4>Messages non lus</h4>
-        <p class="display-6">8</p>
+      <div class="card p-3 text-white bg-danger">
+        <h4>Demandes Refusées</h4>
+        <p class="display-6">' . $model->countDemandesByStatut('refusée') . '</p>
       </div>
     </div>
-  </div>
+  </div>';
 
-  <section id="demandes">
-    <div class="card">
-      <div class="card-header">
-        <h5>Dernières demandes reçues</h5>
-      </div>
-      <div class="card-body table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Type d’acte</th>
-              <th>Date</th>
-              <th>Statut</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Traoré Aïcha</td>
-              <td>Naissance</td>
-              <td>20/05/2025</td>
-              <td><span class="badge bg-warning">En attente</span></td>
-              <td>
-                <a href="traiter_demande.php?id=1" class="btn btn-sm btn-success btn-action">Traiter</a>
-                <a href="details.php?id=1" class="btn btn-sm btn-secondary btn-action">Voir</a>
-              </td>
-            </tr>
-            <tr>
-              <td>Koné Youssouf</td>
-              <td>Mariage</td>
-              <td>18/05/2025</td>
-              <td><span class="badge bg-info text-dark">En cours</span></td>
-              <td>
-                <a href="traiter_demande.php?id=2" class="btn btn-sm btn-success btn-action">Traiter</a>
-                <a href="details.php?id=2" class="btn btn-sm btn-secondary btn-action">Voir</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-</div>
+    $filtre = $_POST['filtre'] ?? null;
+    $page = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
+    $limit = 10;
+    $offset = ($page - 1) * $limit;
+
+    $demandes = $model->getAllDemandes($filtre, $limit, $offset);
+    $totalDemandes = $model->countDemandes($filtre);
+    $totalPages = ceil($totalDemandes / $limit);
+
+    $result .= '
+    <section id="demandes">
+      <form method="POST" action="" class="filter-form">
+        <label for="filtre">Filtrer par type d’acte :</label>
+        <select name="filtre" id="filtre">
+          <option value="">-- Tous les types --</option>
+          <option value="nouvelle_naissance"' . ($filtre === 'nouvelle_naissance' ? ' selected' : '') . '>Nouvel acte de naissance</option>
+          <option value="copie_naissance"' . ($filtre === 'copie_naissance' ? ' selected' : '') . '>Copie d\'acte de naissance</option>
+          <option value="mariage"' . ($filtre === 'mariage' ? ' selected' : '') . '>Acte de mariage</option>
+          <option value="deces"' . ($filtre === 'deces' ? ' selected' : '') . '>Acte de décès</option>
+        </select>
+        <button type="submit">Filtrer</button>
+      </form>
+
+      <div class="card mt-4">
+        <div class="card-header">
+          <h5>Dernières demandes reçues</h5>
+        </div>
+        <div class="card-body table-responsive">
+    ';
+
+    if (empty($demandes)) {
+      $result .= '<div class="text-center text-muted">Aucune demande trouvée.</div>';
+    } else {
+      $result .= '
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Type d’acte</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+        ';
+
+      $typeLibelles = [
+        'nouvelle_naissance' => 'Nouvel acte de naissance',
+        'copie_naissance'    => 'Copie d\'acte de naissance',
+        'mariage'            => 'Acte de mariage',
+        'deces'              => 'Acte de décès'
+      ];
+
+      foreach ($demandes as $demande) {
+        $badgeClass = match ($demande['statut']) {
+          'validée'    => 'bg-success',
+          'refusée'    => 'bg-danger',
+          default      => 'bg-warning',
+        };
+
+        $result .= '
+              <tr>
+                <td>' . htmlspecialchars($demande['nom'] . ' ' . $demande['prenom']) . '</td>
+                <td>' . htmlspecialchars($typeLibelles[$demande['type_acte']]) . '</td>
+                <td>' . date('d/m/Y', strtotime($demande['date_demande'])) . '</td>
+                <td><span class="badge ' . $badgeClass . '">' . ucfirst($demande['statut']) . '</span></td>
+                <td>
+                  <a href="traiter_demande.php?id=' . $demande['id'] . '" class="btn btn-sm btn-success">Traiter</a>
+                  <a href="detailsdemande/' . $demande['id'] . '" class="btn btn-sm btn-secondary">Voir</a>
+                </td>
+              </tr>';
+      }
+
+      $result .= '
+            </tbody>
+          </table>';
+    }
+
+    // Pagination
+    if ($totalPages > 1) {
+      $result .= '
+    <form method="post" id="paginationForm">
+      <input type="hidden" name="filtre" value="' . htmlspecialchars($filtre) . '">
+      <input type="hidden" name="page" id="paginationPage" value="' . $page . '">
+
+      <nav class="mt-3">
+        <ul class="pagination justify-content-center">';
+
+      for ($i = 1; $i <= $totalPages; $i++) {
+        $active = $i == $page ? 'active' : '';
+        $result .= '
+          <li class="page-item ' . $active . '">
+            <button type="submit" class="page-link" onclick="document.getElementById(\'paginationPage\').value=' . $i . '">' . $i . '</button>
+          </li>';
+      }
+
+      $result .= '
+        </ul>
+      </nav>
+    </form>';
+    }
+
+
+    $result .= '</div></div></section>';
+
+    $result .= '</div>
   ';
+  } else {
+    header("Location: login");
+    exit();
+  }
+
   return $result;
 }
+
+// FONCTION POUR VOIR LES DETAILS D'UNE DEMANDE
+
+function displayDetailsdemande()
+{
+    global $model;
+
+    // Récupération de l'ID dans l'URL
+    $urlDemande_id = $_GET["url"];
+    $tabDemande_id = explode("/", $urlDemande_id);
+    $idDemandeDetails = $tabDemande_id[1];
+
+    // Récupération de la demande
+    $demande = $model->getDemandeById($idDemandeDetails);
+
+    if (!$demande) {
+        return "<div class='alert alert-danger'>Demande introuvable.</div>";
+    }
+
+    // Badge selon le statut
+    $statutBadge = 'warning';
+    if ($demande['statut'] === 'validée') $statutBadge = 'success';
+    if ($demande['statut'] === 'refusée') $statutBadge = 'danger';
+
+    $type = $model->getTypeActeById($demande["type_acte_id"]);
+    
+
+    // Bloc spécifique par type
+    $specific = '';
+
+    switch ($type) {
+        case "nouvelle_naissance":
+            $specific .= '
+                <div class="col-md-6"><strong>Nom de l’enfant :</strong> ' . htmlspecialchars($demande["nom_enfant"]) . '</div>
+                <div class="col-md-6"><strong>Date et heure de naissance :</strong> ' . htmlspecialchars($demande["date_heure_naissance"]) . '</div>
+                <div class="col-md-6"><strong>Nom du père :</strong> ' . htmlspecialchars($demande["nomCompletPere"]) . '</div>
+                <div class="col-md-6"><strong>Nom de la mère :</strong> ' . htmlspecialchars($demande["nomCompletMere"]) . '</div>
+            ';
+            break;
+
+        case "copie_naissance":
+            $specific .= '
+                <div class="col-md-6"><strong>Numéro de l’extrait :</strong> ' . htmlspecialchars($demande["numero_extrait"]) . '</div>
+            ';
+            break;
+
+        case "mariage":
+            $specific .= '
+                <div class="col-md-6"><strong>Nom de la mariée :</strong> ' . htmlspecialchars($demande["nomComplet_mariee"]) . '</div>
+                <div class="col-md-6"><strong>Nom du marié :</strong> ' . htmlspecialchars($demande["nomComplet_marie"]) . '</div>
+            ';
+            break;
+
+        case "deces":
+            $specific .= '
+                <div class="col-md-6"><strong>Numéro de l’extrait du défunt :</strong> ' . htmlspecialchars($demande["extrait_defunt"]) . '</div>
+            ';
+            break;
+    }
+
+    // Construction HTML
+    $result = '
+    <div class="container mt-4 mb-5">
+        <h2 class="text-center mb-4">Détails de la demande #' . htmlspecialchars($demande["id"]) . '</h2>
+
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <strong>Informations générales</strong>
+            </div>
+            <div class="card-body row">
+                <div class="col-md-6"><strong>Type d’acte :</strong> ' . ucfirst(str_replace("_", " ", $type)) . '</div>
+                <div class="col-md-6"><strong>Motif :</strong> ' . htmlspecialchars($demande["motif"]) . '</div>
+                <div class="col-md-6"><strong>Nombre de copies :</strong> ' . (int)$demande["nombre_copies"] . '</div>
+                <div class="col-md-6"><strong>Frais de timbre :</strong> ' . (int)$demande["montant_paye"] . ' F</div>
+                <div class="col-md-6"><strong>Moyen de paiement :</strong> ' . ucfirst($demande["moyen_paiement"]) . '</div>
+                <div class="col-md-6"><strong>Numéro de dépôt :</strong> ' . htmlspecialchars($demande["numero_depot"]) . '</div>
+                <div class="col-md-6"><strong>ID de paiement :</strong> ' . htmlspecialchars($demande["reference_paiement"]) . '</div>
+                <div class="col-md-6"><strong>Date de la demande :</strong> ' . date("d/m/Y H:i", strtotime($demande["date_demande"])) . '</div>
+                <div class="col-md-6"><strong>Statut :</strong> <span class="badge bg-' . $statutBadge . '">' . ucfirst($demande["statut"]) . '</span></div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <strong>Informations spécifiques</strong>
+            </div>
+            <div class="card-body row">
+                ' . $specific . '
+            </div>
+        </div>
+
+        <div class="text-center">
+            <form action="#" method="post">
+                <input type="hidden" name="demande_id" value="' . $demande["id"] . '">
+                <button type="submit" name="action" value="valider" class="btn btn-success me-2">✅ Valider</button>
+                <button type="submit" name="action" value="refuser" class="btn btn-danger">❌ Refuser</button>
+            </form>
+        </div>
+    </div>
+    ';
+
+    return $result;
+}
+
+

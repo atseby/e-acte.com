@@ -13,29 +13,37 @@
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico">
 
+
   <!-- Feuille de style principale -->
-  <link rel="stylesheet" href="<?php echo ROOT . SP . ASSETS . SP . "css" . SP . "main.css" ?>">
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/main.css">
 
   <!-- Feuille de style du menu principal -->
-  <link rel="stylesheet" href="<?php echo ROOT . SP . ASSETS . SP . "css" . SP . "menu.css" ?>">
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/menu.css">
 
   <!-- Feuille de style de register -->
-  <link rel="stylesheet" href="<?php echo ROOT . SP . ASSETS . SP . "css" . SP . "register.css" ?>">
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/register.css">
 
   <!-- Feuille de style de Blog -->
-  <link rel="stylesheet" href="<?php echo ROOT . SP . ASSETS . SP . "css" . SP . "blog.css" ?>">
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/blog.css">
 
   <!-- Feuille de style de Blog -->
-  <link rel="stylesheet" href="<?php echo ROOT . SP . ASSETS . SP . "css" . SP . "faq.css" ?>">
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/faq.css">
 
   <!-- Feuille de style de Blog -->
-  <link rel="stylesheet" href="<?php echo ROOT . SP . ASSETS . SP . "css" . SP . "accueil.css" ?>">
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/accueil.css">
 
   <!-- Feuille de style de Profil -->
-  <link rel="stylesheet" href="<?php echo ROOT . SP . ASSETS . SP . "css" . SP . "profil.css" ?>">
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/profil.css">
 
   <!-- Feuille de style de dashboard_agent -->
-  <link rel="stylesheet" href="<?php echo ROOT . SP . ASSETS . SP . "css" . SP . "dashboard_agent.css" ?>">
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/dashboard_agent.css">
+
+  <!-- Feuille de style du formulaire pour filtrer les demandes -->
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/filter-form.css">
+
+  <!-- Feuille de style pour détails demandes -->
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/details-demandes.css">
+
 
   <!-- Police Google Fonts (exemple) -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -60,10 +68,10 @@
     <button class="close-btn" onclick="toggleMenu(false)">❌</button>
     <nav>
       <ul>
-        <li><a href="accueil">Accueil</a></li>
-        <li><a href="blog">Blog</a></li>
-        <li><a href="contact">Contact</a></li>
-        <li><a href="faq">FAQ</a></li>
+        <li><a href="<?= BASE_URL ?>/accueil">Accueil</a></li>
+        <li><a href="<?= BASE_URL ?>/blog">Blog</a></li>
+        <li><a href="<?= BASE_URL ?>/contact">Contact</a></li>
+        <li><a href="<?= BASE_URL ?>/faq">FAQ</a></li>
       </ul>
     </nav>
   </div>
@@ -76,10 +84,10 @@
 
     <!-- Menu desktop -->
     <nav class="desktop-menu d-none d-lg-flex">
-      <a href="accueil">Accueil</a>
-      <a href="blog">Blog</a>
-      <a href="contact">Contact</a>
-      <a href="faq">FAQ</a>
+      <a href="<?= BASE_URL ?>/accueil">Accueil</a>
+      <a href="<?= BASE_URL ?>/blog">Blog</a>
+      <a href="<?= BASE_URL ?>/contact">Contact</a>
+      <a href="<?= BASE_URL ?>/faq">FAQ</a>
     </nav>
   </header>
 
@@ -94,13 +102,13 @@
   </footer>
 
   <!-- Script JavaScript du menu principal -->
-  <script src="<?php echo ROOT . SP . ASSETS . SP . "js" . SP . "menu.js" ?>"></script>
+  <script src="<?= ASSETS_URL ?>/js/menu.js"></script>
 
   <!-- Script JavaScript de demande d'acte dynamique -->
-  <script src="<?php echo ROOT . SP . ASSETS . SP . "js" . SP . "demande-dynamique.js" ?>"></script>
+  <script src="<?= ASSETS_URL ?>/js/demande-dynamique.js"></script>
 
     <!-- Script JavaScript de paiement dynamique de timbre -->
-  <script src="<?php echo ROOT . SP . ASSETS . SP . "js" . SP . "paiement-dynamique.js" ?>"></script>
+  <script src="<?= ASSETS_URL ?>/js/paiement-dynamique.js"></script>
 
   <!-- Script JavaScript JS pour BOOSTRAP -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -94,8 +94,8 @@ function envoyerDemande($data) {
             nomCompletPere,
             nomCompletMere,
             numero_extrait,
-            extrait_mariee,
-            extrait_marie,
+            nomComplet_mariee,
+            nomComplet_marie,
             extrait_defunt,
             moyen_paiement,
             numero_depot,
@@ -103,7 +103,7 @@ function envoyerDemande($data) {
             montant_paye
         ) VALUES (
             :utilisateur_id, :type_acte_id, :nombre_copies, :motif, :nom_enfant, :date_heure_naissance,
-            :nomCompletPere, :nomCompletMere, :numero_extrait, :extrait_mariee, :extrait_marie,
+            :nomCompletPere, :nomCompletMere, :numero_extrait, :nomComplet_mariee, :nomComplet_marie,
             :extrait_defunt, :moyen_paiement, :numero_depot, :reference_paiement, :montant_paye
         )";
 
@@ -118,8 +118,8 @@ function envoyerDemande($data) {
             ':nomCompletPere'       => $data['nomCompletPere'] ?? null,
             ':nomCompletMere'       => $data['nomCompletMere'] ?? null,
             ':numero_extrait'       => $data['numero_extrait'] ?? null,
-            ':extrait_mariee'       => $data['extrait_mariee'] ?? null,
-            ':extrait_marie'        => $data['extrait_marie'] ?? null,
+            ':nomComplet_mariee'       => $data['nomComplet_mariee'] ?? null,
+            ':nomComplet_marie'        => $data['nomComplet_marie'] ?? null,
             ':extrait_defunt'       => $data['extrait_defunt'] ?? null,
             ':moyen_paiement'       => $data['moyen_paiement'],
             ':numero_depot'         => $data['numero_depot'],
@@ -164,5 +164,124 @@ function getDemandesByUtilisateur($utilisateur_id) {
     }
 }
 
+// FONCTION POUR RECUPERER TOUTE LES DEMANDES DE LA BASE DE DONNEES
+
+function getAllDemandes($filtreType = null, $limit = 10, $offset = 0) {
+    try {
+        $sql = "
+            SELECT d.*, u.nom, u.prenom, t.libelle AS type_acte
+            FROM demande d
+            JOIN utilisateur u ON d.utilisateur_id = u.id
+            JOIN type_acte t ON d.type_acte_id = t.id
+        ";
+
+        if (!empty($filtreType)) {
+            $sql .= " WHERE t.libelle = :type_acte";
+        }
+
+        $sql .= " ORDER BY d.date_demande DESC LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->connexion->prepare($sql);
+        if (!empty($filtreType)) {
+            $stmt->bindParam(':type_acte', $filtreType, PDO::PARAM_STR);
+        }
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
+
+// FONCTION POUR GERER LA PAGINATION DES DEMANDES A AFFICHER PAR TYPE
+
+function countDemandes($filtreType = null) {
+    try {
+        $sql = "SELECT COUNT(*) FROM demande d JOIN type_acte t ON d.type_acte_id = t.id";
+        if (!empty($filtreType)) {
+            $sql .= " WHERE t.libelle = :type_acte";
+        }
+
+        $stmt = $this->connexion->prepare($sql);
+        if (!empty($filtreType)) {
+            $stmt->bindParam(':type_acte', $filtreType, PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+
+// FONCTION POUR AVOIR LE NOMBRE DE DEMANDE PAR STATUT
+function countDemandesByStatut($statut) {
+
+    try {
+        $stmt = $this->connexion->prepare("
+            SELECT COUNT(*) AS total 
+            FROM demande 
+            WHERE statut = :statut
+        ");
+        $stmt->bindParam(':statut', $statut, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+
+    } catch (PDOException $e) {
+        error_log("Erreur dans countDemandesByStatut : " . $e->getMessage());
+        return 0;
+    }
+}
+
+// FONCTION PERMETTANT DE RECUPERER LES DEMANDES PAR ID
+
+function getDemandeById($id) {
+    try {
+        
+        // Préparation de la requête
+        $stmt = $this->connexion->prepare("SELECT * FROM demande WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        // Exécution de la requête
+        $stmt->execute();
+
+        // Récupération des données
+        $demande = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Retour du résultat ou tableau vide si non trouvé
+        return $demande ? $demande : [];
+        
+    } catch (PDOException $e) {
+        // Gestion d'erreur
+        echo "Erreur : " . $e->getMessage();
+        return [];
+    }
+}
+
+// FONCTION POUR RECUPERER LES TYPES DE DEMANDE PAR ID
+
+function getTypeActeById($id)
+{
+    try {
+        $stmt = $this->connexion->prepare("SELECT libelle FROM type_acte WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            return $row['libelle'];
+        } else {
+            return null; // ou 'Inconnu'
+        }
+
+    } catch (PDOException $e) {
+        // Loguer l'erreur si besoin
+        return null;
+    }
+}
 
 }
