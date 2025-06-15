@@ -11,6 +11,10 @@ define("TEMPLATES",VIEWS.SP."templates");
 define("CONFIG",ROOT.SP."config");
 define("MODEL",ROOT.SP."model");
 
+
+// IMPORTATION DE TCPDF
+require_once SRC.SP."libs".SP."tcpdf".SP."tcpdf".SP."tcpdf.php";
+
 // IMPORTATION DU FICHIER config.php
 require_once CONFIG.SP. "config.php";
 

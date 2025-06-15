@@ -25,7 +25,7 @@ if(isset($url[1])){
 
 // LES ROUTES DU SITE
 
-$routes = ["accueil","register","login","contact","blog","faq","profil","dashboard_agent","actionIncription","actionConnexion","actionDemandeActe","actionLogoutUser","detailsdemande"];
+$routes = ["accueil","register","login","contact","blog","faq","profil","dashboard_agent","dashboard_admin","actionIncription","actionConnexion","actionDemandeActe","actionLogoutUser","detailsdemande","actionGenererPDFDemande","actionValiderDemande","actionRefuserDemande"];
 
 // LE CONCTROLLER
 

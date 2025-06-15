@@ -19,7 +19,7 @@ function displayAccueil()
   $result = '
   <!-- Section Hero -->
   <section class="hero">
-    <h1>Bienvenue sur le portail des actes administratifs</h1>
+    <h1> Bienvenue sur le portail des actes administratifs de la marie d’Attécoubé.</h1>
     <p>Un service numérique rapide, sécurisé et accessible à tous.</p>
     <div>
       <a href="login" class="btn-orange">Connexion</a>
@@ -314,6 +314,8 @@ function displayFaq()
 function displayProfil()
 {
   if (isset($_SESSION["user"]) && $_SESSION["user"]["role"] == "citoyen") {
+    global $model;
+    $user_id = $_SESSION['user']['id'];
     $email = $_SESSION["user"]["email"];
     $nom = $_SESSION["user"]["nom"];
     $telephone = $_SESSION["user"]["telephone"];
@@ -434,8 +436,7 @@ function displayProfil()
         '</div>';
       unset($_SESSION['error']);
     }
-    global $model;
-    $user_id = $_SESSION['user']['id'];
+
     $user_demandes = $model->getDemandesByUtilisateur($user_id);
 
     $result .= ' </form>
@@ -515,9 +516,19 @@ function displayProfil()
 
     $result .= '<hr class="my-5">
 
-      <!-- Section : Résultats -->
-      <section id="resultats">
-        <h3 class="section-title">Actes délivrés</h3>
+      <!-- Section : Résultats -->';
+
+
+    $actes = $model->getActesByUtilisateurId($user_id);
+
+    $result .= '
+    <section id="resultats">
+      <h3 class="section-title">Actes délivrés</h3>';
+
+    if (empty($actes)) {
+      $result .= '<p>Aucun acte délivré pour le moment.</p>';
+    } else {
+      $result .= '
         <table class="table table-hover">
           <thead>
             <tr>
@@ -526,16 +537,31 @@ function displayProfil()
               <th>Téléchargement</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Acte de naissance</td>
-              <td>10/05/2025</td>
-              <td><a href="documents/acte_naissance_10_05.pdf" class="btn btn-sm btn-outline-primary" target="_blank">Télécharger</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
+          <tbody>';
+
+      foreach ($actes as $acte) {
+        $type = ucfirst(str_replace("_", " ", $acte['type_acte']));
+        $date = date('d/m/Y', strtotime($acte['date_generation']));
+        $pdfPath = htmlspecialchars($acte['chemin_pdf']);
+
+        $result .= '
+              <tr>
+                <td>' . $type . '</td>
+                <td>' . $date . '</td>
+                <td>
+          <form action="' . BASE_URL . SP . 'actionGenererPDFDemande" method="post">
+          <input type="hidden" name="demande_id" value="' . $acte['demande_id'] . '">
+          <button type="submit" class="btn btn-sm btn-success m-0"style="padding: 4px 8px;">Télécharger</button>
+        </form>
+                </td>
+              </tr>';
+      }
+
+      $result .= '</tbody></table>';
+    }
+
+    $result .= '</section>';
+    $result .= '</main>
   </div>
 </div>';
   } else {
@@ -559,7 +585,7 @@ function displaydashboard_agent()
   <!-- Menu latéral -->
 <aside class="sidebarAgent">
   <h2>e-Actes</h2>
-  <p>AGENT : '.$_SESSION["user"]["email"].'</p>
+  <p>AGENT : ' . $_SESSION["user"]["email"] . '</p>
   <a href="#dashboard" class="active"><i class="fas fa-chart-line"></i> Tableau de bord</a>
   <a href="#demandes"><i class="fas fa-folder-open"></i> Demandes reçues</a>
   <a href="#ajouter"><i class="fas fa-plus-circle"></i> Ajouter un acte</a>
@@ -648,23 +674,34 @@ function displaydashboard_agent()
 
       foreach ($demandes as $demande) {
         $badgeClass = match ($demande['statut']) {
-          'validée'    => 'bg-success',
-          'refusée'    => 'bg-danger',
-          default      => 'bg-warning',
+          'validée' => 'bg-success',
+          'refusée' => 'bg-danger',
+          default   => 'bg-warning',
         };
 
         $result .= '
-              <tr>
-                <td>' . htmlspecialchars($demande['nom'] . ' ' . $demande['prenom']) . '</td>
-                <td>' . htmlspecialchars($typeLibelles[$demande['type_acte']]) . '</td>
-                <td>' . date('d/m/Y', strtotime($demande['date_demande'])) . '</td>
-                <td><span class="badge ' . $badgeClass . '">' . ucfirst($demande['statut']) . '</span></td>
-                <td>
-                  <a href="traiter_demande.php?id=' . $demande['id'] . '" class="btn btn-sm btn-success">Traiter</a>
-                  <a href="detailsdemande/' . $demande['id'] . '" class="btn btn-sm btn-secondary">Voir</a>
-                </td>
-              </tr>';
+    <tr>
+      <td>' . htmlspecialchars($demande['nom'] . ' ' . $demande['prenom']) . '</td>
+      <td>' . htmlspecialchars($typeLibelles[$demande['type_acte']]) . '</td>
+      <td>' . date('d/m/Y', strtotime($demande['date_demande'])) . '</td>
+      <td><span class="badge ' . $badgeClass . '">' . ucfirst($demande['statut']) . '</span></td>
+      <td class="d-flex gap-2 align-items-center">
+      <div><a href="detailsdemande/' . $demande['id'] . '" class="btn btn-sm btn-success">Traiter</a></div>';
+
+
+        if ($demande['statut'] === 'validée') {
+          $result .= '
+        <form action="' . BASE_URL . SP . 'actionGenererPDFDemande" method="post">
+          <input type="hidden" name="demande_id" value="' . $demande['id'] . '">
+          <button type="submit" class="btn btn-sm btn-secondary m-0"style="padding: 4px 8px;">Aperçu du PDF</button>
+        </form>';
+        }
+
+        $result .= '
+      </td>
+    </tr>';
       }
+
 
       $result .= '
             </tbody>
@@ -712,63 +749,63 @@ function displaydashboard_agent()
 
 function displayDetailsdemande()
 {
-    global $model;
+  global $model;
 
-    // Récupération de l'ID dans l'URL
-    $urlDemande_id = $_GET["url"];
-    $tabDemande_id = explode("/", $urlDemande_id);
-    $idDemandeDetails = $tabDemande_id[1];
+  // Récupération de l'ID dans l'URL
+  $urlDemande_id = $_GET["url"];
+  $tabDemande_id = explode("/", $urlDemande_id);
+  $idDemandeDetails = $tabDemande_id[1];
 
-    // Récupération de la demande
-    $demande = $model->getDemandeById($idDemandeDetails);
+  // Récupération de la demande
+  $demande = $model->getDemandeById($idDemandeDetails);
 
-    if (!$demande) {
-        return "<div class='alert alert-danger'>Demande introuvable.</div>";
-    }
+  if (!$demande) {
+    return "<div class='alert alert-danger'>Demande introuvable.</div>";
+  }
 
-    // Badge selon le statut
-    $statutBadge = 'warning';
-    if ($demande['statut'] === 'validée') $statutBadge = 'success';
-    if ($demande['statut'] === 'refusée') $statutBadge = 'danger';
+  // Badge selon le statut
+  $statutBadge = 'warning';
+  if ($demande['statut'] === 'validée') $statutBadge = 'success';
+  if ($demande['statut'] === 'refusée') $statutBadge = 'danger';
 
-    $type = $model->getTypeActeById($demande["type_acte_id"]);
-    
+  $type = $model->getTypeActeById($demande["type_acte_id"]);
 
-    // Bloc spécifique par type
-    $specific = '';
 
-    switch ($type) {
-        case "nouvelle_naissance":
-            $specific .= '
+  // Bloc spécifique par type
+  $specific = '';
+
+  switch ($type) {
+    case "nouvelle_naissance":
+      $specific .= '
                 <div class="col-md-6"><strong>Nom de l’enfant :</strong> ' . htmlspecialchars($demande["nom_enfant"]) . '</div>
                 <div class="col-md-6"><strong>Date et heure de naissance :</strong> ' . htmlspecialchars($demande["date_heure_naissance"]) . '</div>
                 <div class="col-md-6"><strong>Nom du père :</strong> ' . htmlspecialchars($demande["nomCompletPere"]) . '</div>
                 <div class="col-md-6"><strong>Nom de la mère :</strong> ' . htmlspecialchars($demande["nomCompletMere"]) . '</div>
             ';
-            break;
+      break;
 
-        case "copie_naissance":
-            $specific .= '
+    case "copie_naissance":
+      $specific .= '
                 <div class="col-md-6"><strong>Numéro de l’extrait :</strong> ' . htmlspecialchars($demande["numero_extrait"]) . '</div>
             ';
-            break;
+      break;
 
-        case "mariage":
-            $specific .= '
+    case "mariage":
+      $specific .= '
                 <div class="col-md-6"><strong>Nom de la mariée :</strong> ' . htmlspecialchars($demande["nomComplet_mariee"]) . '</div>
                 <div class="col-md-6"><strong>Nom du marié :</strong> ' . htmlspecialchars($demande["nomComplet_marie"]) . '</div>
             ';
-            break;
+      break;
 
-        case "deces":
-            $specific .= '
+    case "deces":
+      $specific .= '
                 <div class="col-md-6"><strong>Numéro de l’extrait du défunt :</strong> ' . htmlspecialchars($demande["extrait_defunt"]) . '</div>
             ';
-            break;
-    }
+      break;
+  }
 
-    // Construction HTML
-    $result = '
+  // Construction HTML
+  $result = '
     <div class="container mt-4 mb-5">
         <h2 class="text-center mb-4">Détails de la demande #' . htmlspecialchars($demande["id"]) . '</h2>
 
@@ -796,19 +833,95 @@ function displayDetailsdemande()
             <div class="card-body row">
                 ' . $specific . '
             </div>
-        </div>
+        </div>';
 
-        <div class="text-center">
-            <form action="#" method="post">
-                <input type="hidden" name="demande_id" value="' . $demande["id"] . '">
-                <button type="submit" name="action" value="valider" class="btn btn-success me-2">✅ Valider</button>
-                <button type="submit" name="action" value="refuser" class="btn btn-danger">❌ Refuser</button>
-            </form>
-        </div>
-    </div>
-    ';
+  $result .= '<div class="text-center mb-3">';
+  if (!empty($_SESSION['success'])) {
+    $result .= '<div class="alert alert-success">' . htmlspecialchars($_SESSION['success']) . ' <a href="' . BASE_URL . SP . "dashboard_agent" . '" class="btn btn-primary mt-3">
+  🔙 Retour au tableau de bord
+</a></div>';
+    unset($_SESSION['success']);
+  }
+  if (!empty($_SESSION['error'])) {
+    $result .= '<div class="alert alert-danger">' . htmlspecialchars($_SESSION['error']) . ' <a href="' . BASE_URL . SP . "dashboard_agent" . '" class="btn btn-primary mt-3">
+  🔙 Retour au tableau de bord
+</a></div>';
+    unset($_SESSION['error']);
+  }
+  $result .= '</div>';
 
-    return $result;
+  $result .= '
+<div class="text-center">
+  <div class="d-flex justify-content-center gap-2">
+
+    <form action="' . BASE_URL . SP . 'actionValiderDemande" method="post">
+      <input type="hidden" name="demande_id" value="' . $demande["id"] . '">
+      <button type="submit" name="action" value="valider" class="btn btn-success">✅ Valider</button>
+    </form>
+
+    <form action="' . BASE_URL . SP . 'actionRefuserDemande" method="post">
+      <input type="hidden" name="demande_id" value="' . $demande["id"] . '">
+      <button type="submit" name="action" value="refuser" class="btn btn-danger">❌ Refuser</button>
+    </form>
+
+  </div>
+</div>
+</div>';
+
+
+  return $result;
 }
 
+// PAGE ADMIN
+function displayDashboard_admin(){
+  $result = '
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Menu latéral -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-orange sidebar">
+                <div class="position-sticky">
+                    <h2 class="text-white text-center mt-3">Admin Panel</h2>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link text-white" href="#">Tableau de bord</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#">Gestion des agents</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#">Statistiques</a></li>
+                    </ul>
+                </div>
+            </nav>
 
+            <!-- Contenu principal -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <h1 class="mt-4">Tableau de bord</h1>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Agents actifs</h5>
+                                <p class="card-text">12 Agents</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Demandes en ligne</h5>
+                                <p class="card-text">254 Demandes</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Demandes en présentiel</h5>
+                                <p class="card-text">89 Demandes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+  ';
+  return $result;
+}

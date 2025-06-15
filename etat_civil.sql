@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2025 at 03:27 PM
+-- Generation Time: Jun 15, 2025 at 08:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -33,6 +33,15 @@ CREATE TABLE `acte` (
   `chemin_pdf` varchar(255) DEFAULT NULL,
   `date_generation` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `acte`
+--
+
+INSERT INTO `acte` (`id`, `demande_id`, `chemin_pdf`, `date_generation`) VALUES
+(1, 10, 'documents/acte_10.pdf', '2025-06-11 15:34:10'),
+(2, 9, 'documents/acte_9.pdf', '2025-06-11 15:53:59'),
+(3, 11, 'documents/acte_11.pdf', '2025-06-11 20:48:52');
 
 -- --------------------------------------------------------
 
@@ -72,7 +81,12 @@ INSERT INTO `demande` (`id`, `utilisateur_id`, `type_acte_id`, `nombre_copies`, 
 (3, 2, 1, 1, 'EEERR', 'ASSY', '2025-10-15 12:00:00', 'EERRR', 'EERR', NULL, NULL, NULL, NULL, 'wave', '0700000000', 'RRRR', 500, 'en attente', '2025-05-29 13:11:16'),
 (4, 1, 3, 3, 'HGHHHGHHGH', NULL, NULL, NULL, NULL, NULL, '567 DU 20M EETT', '567 DU 20M EETT', NULL, 'moov', '0500000000', 'DDDDD455', 1500, 'en attente', '2025-05-29 19:20:01'),
 (5, 1, 1, 1, 'déclaration de naissance ', 'ASSI Godo Firmin', '2000-09-12 12:00:00', 'ASSI Bernard', 'Kouassi Anne Rogert', NULL, NULL, NULL, NULL, 'wave', '0700000000', 'GHHHHGHG', 500, 'en attente', '2025-06-09 11:10:51'),
-(6, 1, 3, 1, 'rrrr', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wave', '0700000000', 'GHHHHGHG', 500, 'en attente', '2025-06-09 11:12:51');
+(6, 1, 3, 1, 'rrrr', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wave', '0700000000', 'GHHHHGHG', 500, 'en attente', '2025-06-09 11:12:51'),
+(7, 1, 3, 3, 'HHH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'orange', '0700000000', 'JJJJJJJ', 1500, 'en attente', '2025-06-09 14:53:28'),
+(8, 1, 3, 4, '', NULL, NULL, NULL, NULL, NULL, 'ASSI yapo Anne', 'APPOh Dakar', NULL, 'orange', '0700000000', 'GHHHHGHG', 2000, 'refusée', '2025-06-09 15:01:01'),
+(9, 1, 1, 3, 'GSGGGS', 'Béda Edouard', '2222-09-12 23:34:00', 'Coulibaly Savané', 'ATSEBY BEDA EDOUARD', NULL, NULL, NULL, NULL, 'orange', '0700000000', 'yyeyyye', 1500, 'validée', '2025-06-10 12:12:13'),
+(10, 1, 1, 1, 'Naissance de notre fille', 'COULIBALY Aminata Savané', '2025-06-11 03:42:00', 'COULIBALY Youssouf', 'COULIBALY Myriam', NULL, NULL, NULL, NULL, 'wave', '0700000000', 'RRRR', 500, 'validée', '2025-06-11 03:44:44'),
+(11, 6, 1, 2, '', 'Coulibaly youssof', '2025-06-11 19:40:00', 'Coulibaly Koné', 'Coulibaly Ane', NULL, NULL, NULL, NULL, 'orange', '0700000000', 'UUUU', 1000, 'validée', '2025-06-11 20:47:55');
 
 -- --------------------------------------------------------
 
@@ -101,6 +115,16 @@ CREATE TABLE `historique` (
   `acteur_id` int(11) DEFAULT NULL,
   `date_action` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `historique`
+--
+
+INSERT INTO `historique` (`id`, `demande_id`, `action`, `acteur_id`, `date_action`) VALUES
+(1, 10, 'Validation de la demande', 5, '2025-06-11 15:34:10'),
+(2, 9, 'Validation de la demande', 5, '2025-06-11 15:53:59'),
+(3, 8, 'Refus de la demande', 5, '2025-06-11 15:59:36'),
+(4, 11, 'Validation de la demande', 5, '2025-06-11 20:48:52');
 
 -- --------------------------------------------------------
 
@@ -162,7 +186,8 @@ CREATE TABLE `utilisateur` (
 INSERT INTO `utilisateur` (`id`, `nom`, `prenom`, `email`, `mot_de_passe`, `telephone`, `role`, `statut`, `date_creation`) VALUES
 (1, 'ATSEBY', '', 'bedaedouard@gmail.com', '$2y$10$edrlYWMTSDsIONh/qbRYDOoGB5yZ35QjI0lpcp3M5As.u9grJkpbG', '0700000000', 'citoyen', 'actif', '2025-05-27 18:52:55'),
 (2, 'Sangaré Kouamé', '', 'sangare@gmail.com', '$2y$10$CD1QjtMbpn1LiqLeRnGiT.FrXPAf8kd30VU2/8ViA3KESCoIWkq1q', '0788125701', 'citoyen', 'actif', '2025-05-28 11:18:47'),
-(5, 'ATSEBY', '', 'atseby.agent123@e-acte.com', '$2y$10$CD1QjtMbpn1LiqLeRnGiT.FrXPAf8kd30VU2/8ViA3KESCoIWkq1q', NULL, 'agent', 'actif', '2025-06-08 10:29:17');
+(5, 'ATSEBY', '', 'atseby.agent123@e-acte.com', '$2y$10$CD1QjtMbpn1LiqLeRnGiT.FrXPAf8kd30VU2/8ViA3KESCoIWkq1q', NULL, 'agent', 'actif', '2025-06-08 10:29:17'),
+(6, 'jjj', '', 'atsebyedouard@gmail.com', '$2y$10$5egKbUhpOn3Ax3dKVDZlZ.B/Q8O/5O4bnK/nCSmljjAE.lGL003pG', '07888', 'citoyen', 'actif', '2025-06-10 12:47:17');
 
 --
 -- Indexes for dumped tables
@@ -226,13 +251,13 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT for table `acte`
 --
 ALTER TABLE `acte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `demande`
 --
 ALTER TABLE `demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `document`
@@ -244,7 +269,7 @@ ALTER TABLE `document`
 -- AUTO_INCREMENT for table `historique`
 --
 ALTER TABLE `historique`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `notification`
@@ -262,7 +287,7 @@ ALTER TABLE `type_acte`
 -- AUTO_INCREMENT for table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

@@ -44,6 +44,9 @@
   <!-- Feuille de style pour détails demandes -->
   <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/details-demandes.css">
 
+  <!-- Feuille de style pour dashboard_admin -->
+  <link rel="stylesheet" href="<?= ASSETS_URL ?>/css/dashboard_admin.css">
+
 
   <!-- Police Google Fonts (exemple) -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
